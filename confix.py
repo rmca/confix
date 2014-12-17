@@ -200,7 +200,6 @@ def parse(conf_file, parser=None, type_check=True):
       specified in the configuration file has a different type than
       the one defined in the configuration class.
     """
-    global _conf_file
     if _conf_file is not None:
         raise Error('already configured (you may want to use discard() '
                     'then call parse() again')
@@ -227,6 +226,11 @@ def parse(conf_file, parser=None, type_check=True):
     # TODO: use a copy of _conf_map and set it at the end of this
     #       procedure?
     # TODO: should we use threading.[R]Lock (probably safer)?
+    initialise(conf, file, type_check=type_check)
+
+
+def initialise(conf=None, file=None, type_check=True):
+    global _conf_file
     if isinstance(conf, dict):
         for section, values in conf.items():
             inst = _conf_map.get(section, None)
